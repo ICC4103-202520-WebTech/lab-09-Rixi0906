@@ -49,6 +49,10 @@ accessories:
     options:
       volumes:
         - /var/apps/recipe-book/postgres:/var/lib/postgresql/data
+
+deploy:
+  prune: false
+
 prune:
   images: true     
   containers: true
