@@ -1,0 +1,27 @@
+<p style="color: green"><%= notice %></p>
+
+<% if notice.present? %>
+  <p class="text-success"><%= notice %></p>
+<% end %>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2 class="h4 mb-0"><%= @recipe.title %></h2>
+
+ <div class="recipe-details" style="margin-bottom:1rem;">
+  <p><strong>Cook Time:</strong> <%= @recipe.cook_time %> minutes</p>
+  <p><strong>Difficulty:</strong> <%= @recipe.difficulty %></p>
+  <p><strong>Instructions:</strong> 
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <%= @recipe.instructions %>
+  </div>
+</div>
+ <div>
+    <%= link_to "Edit", edit_recipe_path(@recipe), class: "btn btn-sm btn-primary me-2" %>
+    <%= link_to "Delete", @recipe, class: "btn btn-sm btn-danger",
+          data: { turbo_method: :delete} %>
+    <%= link_to "Back", recipes_path, class: "btn btn-sm btn-secondary" %>
+  </div>
+</div>

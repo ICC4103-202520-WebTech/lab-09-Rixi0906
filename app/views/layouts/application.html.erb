@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Recipebook" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
+    <link rel="icon" href="/icon.png" type="image/png"> 
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" href="/icon.png">
+     <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+
+<nav style="background:#e46a84;color:white;display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.5rem;border-bottom:3px solid #d24c66;">
+  <%= link_to root_path, style: "color:white;text-decoration:none;font-weight:700;font-size:1.2rem;" do %> RecipeBook
+  <% end %>
+
+  <div style="display:flex;gap:1rem;align-items:center;">
+    <% if user_signed_in? %>
+      <%= link_to "New Recipe", new_recipe_path, style:"color:white;text-decoration:none;font-weight:500;" %>
+      <%= link_to "Log Out", destroy_user_session_path, data: { turbo_method: :delete }, style:"color:white;text-decoration:none;font-weight:500;" %>
+      <span style="font-weight:600;"> Online <%= current_user.name.presence || "Usuario" %></span>
+    <% else %>
+      <%= link_to "Sign In", new_user_registration_path, style:"color:white;text-decoration:none;font-weight:500;" %>
+      <%= link_to "Log In", new_user_session_path, style:"color:white;text-decoration:none;font-weight:500;" %>
+    <% end %>
+  </div>
+</nav>
+
+    <% if notice.present? %>
+      <p class="notice" style="color:#155724;background:#d4edda;margin:0;padding:.5rem 1rem;"><%= notice %></p>
+    <% end %>
+    <% if alert.present? %>
+      <p class="alert" style="color:#721c24;background:#f8d7da;margin:0;padding:.5rem 1rem;"><%= alert %></p>
+    <% end %>
+    <%= yield %>
+    <footer style="margin-top:2rem;text-align:center;color:#777">
+      © <%= Time.current.year %> Made for a 7
+    </footer>
+
+  </body>
+</html>
