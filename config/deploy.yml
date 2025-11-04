@@ -5,18 +5,20 @@ servers:
   web:
     hosts:
       - 159.65.65.105
-    volumes:                       # <— no "options:"
-      - /var/apps/recipe-book/log:/rails/log
-      - /var/apps/recipe-book/storage:/rails/storage
-      - /var/apps/recipe-book/tmp:/rails/tmp
-      - /var/apps/recipe-book/assets:/rails/public/assets
+    # Usa --mount con Kamal: options.mounts
+    options:
+      mounts:
+        - type=bind,source=/var/apps/recipe-book/log,target=/rails/log
+        - type=bind,source=/var/apps/recipe-book/storage,target=/rails/storage
+        - type=bind,source=/var/apps/recipe-book/tmp,target=/rails/tmp
+        - type=bind,source=/var/apps/recipe-book/assets,target=/rails/public/assets
     env:
       clear:
         RAILS_ENV: production
         RACK_ENV: production
         RAILS_LOG_TO_STDOUT: "1"
         RAILS_SERVE_STATIC_FILES: "1"
-        # Usa el hostname del accessory "db" (ver abajo)
+        # ¡OJO! Con accessory "db", usa su hostname "db"
         DATABASE_URL: "postgres://recipe_user:${POSTGRES_PASSWORD}@db:5432/recipebook_prod"
       secret:
         - RAILS_MASTER_KEY
@@ -45,5 +47,6 @@ accessories:
         POSTGRES_USER: recipe_user
       secret:
         - POSTGRES_PASSWORD
-    volumes:
-      - /var/apps/recipe-book/postgres:/var/lib/postgresql/data
+    options:
+      volumes:
+        - /var/apps/recipe-book/postgres:/var/lib/postgresql/data
